@@ -1,0 +1,10 @@
+html/**/
+
+nginx/ssl/**/
+nginx/*.conf
+
+services/cron/logs
+services/cron/*.crontab
+
+services/supervisor/logs
+services/supervisor/*.ini

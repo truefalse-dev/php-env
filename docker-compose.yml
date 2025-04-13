@@ -1,0 +1,40 @@
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./html:/var/www/html
+      - ./nginx/ssl:/etc/nginx/certs
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build: ./php-fpm
+    volumes:
+      - ./html:/var/www/html
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+    ports:
+      - "5432:5432"  
+    volumes:
+      - postgres-data:/var/lib/postgresql/data 
+  cron:
+    build: ./services/cron 
+    volumes:
+      - ./services/cron/logs:/etc/crontabs/logs
+      - ./html:/var/www/html
+  supervisor:
+    build: ./services/supervisor  
+    volumes:
+      - ./services/supervisor/logs:/etc/supervisor/logs
+      - ./html:/var/www/html
+
+volumes:
+  postgres-data: 
