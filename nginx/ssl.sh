@@ -10,8 +10,9 @@ done
 
 for DOMAIN in $DOMAINS; do
 
-    CERT_NAME="$DOMAIN.local"
-    CERT_DIR="/etc/nginx/certs/$DOMAIN"
+    DIR_NAME=$(echo "$DOMAIN" | cut -d '.' -f 1)
+    CERT_NAME="$DOMAIN"
+    CERT_DIR="/etc/nginx/certs/$DIR_NAME"
     CERT_KEY="$CERT_DIR/$CERT_NAME.key"
     CERT_PEM="$CERT_DIR/$CERT_NAME.crt"
 
