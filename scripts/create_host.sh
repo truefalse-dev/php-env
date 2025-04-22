@@ -1,5 +1,26 @@
 #!/bin/sh
 
+PHP="${PHP:-php84}"
+
+array=("php84" "php74")
+found=0
+
+function throw {
+  echo "Error: $1" >&2
+  exit 1
+}
+
+for item in "${array[@]}"; do
+  if [ "$item" = "${PHP}" ]; then
+    found=1
+    break
+  fi
+done
+
+if [ "$found" -eq 0 ]; then
+  throw "PHP is not correct: use 'php84','php74'"
+fi
+
 mkdir -p html/${NAME}
 
 printf "Site directory ${NAME} created\n"
@@ -46,21 +67,21 @@ echo '        fastcgi_param HTTP_PROXY "";' >> nginx/${NAME}.conf
 echo '    }' >> nginx/${NAME}.conf
 echo '}' >> nginx/${NAME}.conf
 
-touch php-fpm/php84/${NAME}.conf
+touch php-fpm/${PHP}/${NAME}.conf
 
-echo '['${NAME}']' >> php-fpm/php84/${NAME}.conf
-echo 'user = www-data' >> php-fpm/php84/${NAME}.conf
-echo 'group = www-data' >> php-fpm/php84/${NAME}.conf
-echo '' >> php-fpm/php84/${NAME}.conf
-echo 'listen = /var/run/php/'${NAME}'.sock' >> php-fpm/php84/${NAME}.conf
-echo 'listen.owner = www-data' >> php-fpm/php84/${NAME}.conf
-echo 'listen.group = www-data' >> php-fpm/php84/${NAME}.conf
-echo '' >> php-fpm/php84/${NAME}.conf
-echo 'pm = dynamic' >> php-fpm/php84/${NAME}.conf
-echo 'pm.max_children = 30' >> php-fpm/php84/${NAME}.conf
-echo 'pm.start_servers = 10' >> php-fpm/php84/${NAME}.conf
-echo 'pm.min_spare_servers = 5' >> php-fpm/php84/${NAME}.conf
-echo 'pm.max_spare_servers = 15' >> php-fpm/php84/${NAME}.conf
+echo '['${NAME}']' >> php-fpm/${PHP}/${NAME}.conf
+echo 'user = www-data' >> php-fpm/${PHP}/${NAME}.conf
+echo 'group = www-data' >> php-fpm/${PHP}/${NAME}.conf
+echo '' >> php-fpm/${PHP}/${NAME}.conf
+echo 'listen = /var/run/php/'${NAME}'.sock' >> php-fpm/${PHP}/${NAME}.conf
+echo 'listen.owner = www-data' >> php-fpm/${PHP}/${NAME}.conf
+echo 'listen.group = www-data' >> php-fpm/${PHP}/${NAME}.conf
+echo '' >> php-fpm/${PHP}/${NAME}.conf
+echo 'pm = dynamic' >> php-fpm/${PHP}/${NAME}.conf
+echo 'pm.max_children = 30' >> php-fpm/${PHP}/${NAME}.conf
+echo 'pm.start_servers = 10' >> php-fpm/${PHP}/${NAME}.conf
+echo 'pm.min_spare_servers = 5' >> php-fpm/${PHP}/${NAME}.conf
+echo 'pm.max_spare_servers = 15' >> php-fpm/${PHP}/${NAME}.conf
 
 printf "Nginx configuration file created\n"
 
