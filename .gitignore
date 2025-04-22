@@ -2,6 +2,7 @@ html/**/
 
 nginx/ssl/**/
 nginx/*.conf
+php-fpm/**/*.conf
 
 services/cron/logs
 services/cron/*.crontab

@@ -7,15 +7,23 @@ services:
     volumes:
       - ./html:/var/www/html
       - ./nginx/ssl:/etc/nginx/certs
+      - php_socket:/var/run/php
     depends_on:
-      - php-fpm
+      - php84
+      - php74
 
-  php-fpm:
-    build: ./php-fpm
+  php84:
+    build: ./php-fpm/php84
     volumes:
       - ./html:/var/www/html
+      - php_socket:/var/run/php
 
-  db:
+  php74:
+    build: ./php-fpm/php74
+    volumes:
+      - ./html:/var/www/html  
+
+  postgres:
     image: postgres:latest
     environment:
       POSTGRES_USER: root
@@ -24,7 +32,8 @@ services:
     ports:
       - "5432:5432"  
     volumes:
-      - postgres-data:/var/lib/postgresql/data 
+      - postgres-data:/var/lib/postgresql/data
+
   cron:
     build: ./services/cron 
     volumes:
@@ -38,3 +47,4 @@ services:
 
 volumes:
   postgres-data: 
+  php_socket:

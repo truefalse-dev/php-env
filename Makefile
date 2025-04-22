@@ -1,14 +1,14 @@
-.PHONY: site-create site-remove up down build
+.PHONY: host-create host-remove up down build
 
-site-create: ## Create site
-	@sh scripts/create_site.sh NAME=${NAME}
+host-create: ## Create host
+	@sh scripts/create_host.sh NAME=${NAME}
 	@docker-compose down
 	@docker-compose build
 	@docker-compose up -d
 	@echo "127.0.0.1 ${NAME} #added to hosts" | sudo tee -a /etc/hosts
 
-site-remove: ## Remove site	
-	@sh scripts/remove_site.sh NAME=${NAME}
+host-remove: ## Remove host	
+	@sh scripts/remove_host.sh NAME=${NAME}
 	@docker-compose down
 	@docker-compose build
 	@docker-compose up -d
@@ -20,7 +20,7 @@ down: ## Stop the Docker Compose services
 	docker-compose down
 
 build: ## Build or rebuild services
-	docker-compose build
+	docker-compose up -d --build
 
 exec: ## Shell in php container
 	@docker-compose exec php-fpm sh
