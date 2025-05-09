@@ -1,8 +1,8 @@
 FROM php:8.4-fpm-alpine
 
-RUN apk add --no-cache \
+RUN apk add --no-cache jpeg-dev zlib-dev libpng-dev zip npm \
     postgresql-dev \
-    && docker-php-ext-install opcache pdo pdo_pgsql
+    && docker-php-ext-install opcache pdo gd pdo_pgsql exif
 
 RUN mkdir -p /var/run/php && chown www-data:www-data /var/run/php    
 
